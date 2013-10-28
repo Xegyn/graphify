@@ -1,8 +1,8 @@
 function Graphify (selector, data, options) {
-//  this.id = id;
   this.selector = selector;
   this.data = data;
   this.options = options;
+  this.xmlns = "http://www.w3.org/2000/svg";
 }
 
 Graphify.prototype.points = function() {
@@ -10,12 +10,12 @@ Graphify.prototype.points = function() {
 };
 
 Graphify.prototype.render = function () {
-  var svgDocument = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svgDocument.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+  var svgDocument = document.createElementNS(this.xmlns, "svg");
+  svgDocument.setAttribute('xmlns', this.xmlns);
   svgDocument.setAttribute('version', 1.1);
-  var polyline = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+  var polyline = document.createElementNS(this.xmlns, 'polyline');
   polyline.setAttribute('points', this.points());
-  polyline.setAttribute("style", "fill:none;stroke:black;stroke-width:3");
+  polyline.setAttribute("style", "fill:none; stroke:black; stroke-width:3");
   svgDocument.appendChild(polyline);
   $(this.selector).append(svgDocument);
 }
