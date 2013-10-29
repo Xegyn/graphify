@@ -8,8 +8,35 @@ function Graphify (selector, data, options) {
 }
 
 Graphify.prototype.points = function () {
-  return "20,20 40,25 60,40 80,120 120,140 200,180";
-};
+
+  this.separateData();
+
+  console.log(this.xs);
+  console.log(this.ys);
+
+  var length = this.xs.length;
+  var xdist = this.width / length;
+  console.log(xdist);
+  var ydist = this.height / Math.max.apply(null, this.ys);
+  console.log(ydist);
+  var points = "";
+
+  for(var i=0; i<length; i++) {
+    points += xdist * i + "," + (this.height / this.ys[i]) + " ";
+  }
+
+  console.log(points);
+  return points;
+}
+
+Graphify.prototype.separateData = function () {
+  this.xs = new Array();
+  this.ys = new Array();
+  for(var i=0; i<this.data.length; i++) {
+    this.xs[i] = this.data[i]["date"];
+    this.ys[i] = this.data[i]["amount"];
+  }
+}
 
 Graphify.prototype.render = function () {
   this.createSvg();
@@ -35,14 +62,14 @@ Graphify.prototype.renderLine = function (x1, y1, x2, y2) {
   line.setAttribute('y1', y1);
   line.setAttribute('x2', x2);
   line.setAttribute('y2', y2);
-  line.setAttribute("style", "fill:none; stroke:black; stroke-width:3");
+  line.setAttribute("style", "fill:none; stroke:black; stroke-width:1");
   this.svgDocument.appendChild(line);
 }
 
 Graphify.prototype.renderLineGraph = function () {
   var polyline = document.createElementNS(this.xmlns, 'polyline');
   polyline.setAttribute('points', this.points());
-  polyline.setAttribute("style", "fill:none; stroke:black; stroke-width:3");
+  polyline.setAttribute("style", "fill:none; stroke:black; stroke-width:2");
   this.svgDocument.appendChild(polyline);
 }
 
